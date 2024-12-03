@@ -7,6 +7,9 @@ pixel RPG characters created by Sean Browning.
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System;
+using UnityEngine.TextCore.Text;
 
 
 #region Assignment Instructions
@@ -69,29 +72,71 @@ public partial class PartyCharacter
 
 
 #region Assignment Part 1
-
 static public class AssignmentPart1
 {
 
     static public void SavePartyButtonPressed()
     {
-        foreach (PartyCharacter pc in GameContent.partyCharacters)
+        using (StreamWriter writer = new StreamWriter("SaveFile.txt"))
         {
-            Debug.Log("PC class id == " + pc.classID);
+            writer.WriteLine(GameContent.partyCharacters.Count);
+            foreach (PartyCharacter character in GameContent.partyCharacters)
+            {
+                // Write character properties
+                writer.WriteLine(character.classID);
+                writer.WriteLine(character.health);
+                writer.WriteLine(character.mana);
+                writer.WriteLine(character.strength);
+                writer.WriteLine(character.agility);
+                writer.WriteLine(character.wisdom);
+
+                // Write equipment list
+                writer.WriteLine(character.equipment.Count);
+                foreach (var item in character.equipment)
+                {
+                    writer.WriteLine(item);
+                }
+
+
+            }
         }
     }
 
     static public void LoadPartyButtonPressed()
     {
         GameContent.partyCharacters.Clear();
+        try
+        {
+            using (StreamReader reader = new StreamReader("SaveFile.txt"))
+            {
+                int characterCount = int.Parse(reader.ReadLine());
+                for (int k = 0; k < characterCount; k++)
+                {
+                    PartyCharacter character = new PartyCharacter
+                    {
+                        classID = int.Parse(reader.ReadLine()),
+                        health = int.Parse(reader.ReadLine()),
+                        mana = int.Parse(reader.ReadLine()),
+                        strength = int.Parse(reader.ReadLine()),
+                        agility = int.Parse(reader.ReadLine()),
+                        wisdom = int.Parse(reader.ReadLine())
+                    };
 
-        PartyCharacter pc = new PartyCharacter(1, 10, 10, 10, 10, 10);
-        GameContent.partyCharacters.AddLast(pc);
-        pc = new PartyCharacter(2, 11, 11, 11, 11, 11);
-        GameContent.partyCharacters.AddLast(pc);
-        pc = new PartyCharacter(3, 12, 12, 12, 12, 12);
-        GameContent.partyCharacters.AddLast(pc);
+                    int equipmentCount = int.Parse(reader.ReadLine());
+                    for (int i = 0; i < equipmentCount; i++)
+                    {
+                        character.equipment.AddLast(int.Parse(reader.ReadLine()));
+                    }
 
+                    GameContent.partyCharacters.AddLast(character);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading file: {ex.Message}");
+
+        }
         GameContent.RefreshUI();
     }
 
