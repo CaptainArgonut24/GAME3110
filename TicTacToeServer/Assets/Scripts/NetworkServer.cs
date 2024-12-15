@@ -32,7 +32,7 @@ public class NetworkServer : MonoBehaviour
         public User(string username, string password)
         {
             this.username = username;
-            this.password = password;
+            this.password = password; // 10/10 secerity 
         }
     }
 
@@ -48,7 +48,7 @@ public class NetworkServer : MonoBehaviour
 
         int error = networkDriver.Bind(endpoint);
         if (error != 0)
-            Debug.Log("Failed to bind to port " + NetworkPort);
+            Debug.Log("Failed to bind to port " + NetworkPort); // BELL SUCKS AS AND OWNER FOR THE ARGOS  AND AS AN ISP    
         else
             networkDriver.Listen();
 

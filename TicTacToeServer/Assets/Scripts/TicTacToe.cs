@@ -4,7 +4,7 @@ public class TicTacToe
 {
     public enum Player { None, X, O }
 
-    private Player[] board = new Player[9];
+    private Player[] board = new Player[9];// more like spots
     private Player currentPlayer = Player.X;
 
     public TicTacToe()
