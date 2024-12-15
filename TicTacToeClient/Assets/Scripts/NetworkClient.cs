@@ -47,7 +47,8 @@ public class NetworkClient : MonoBehaviour
     NetworkPipeline reliableAndInOrderPipeline;
     NetworkPipeline nonReliableNotInOrderedPipeline;
     const ushort NetworkPort = 9001;
-    const string IPAddress = "10.0.0.33";
+    const string IPAddress = "192.168.2.53"; // dam bell, //  IPv4 Address
+    
 
     private string playerName;
     private bool isMyTurn = false;
